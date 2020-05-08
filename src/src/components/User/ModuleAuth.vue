@@ -16,7 +16,7 @@
     </el-select>
 
     <el-input placeholder="输入关键字进行过滤" v-model="filterText"> </el-input>
-
+    <!-- 模块树 -->
     <el-tree
       class="filter-tree"
       :data="allModules"
@@ -32,7 +32,7 @@
       @check="moduleCheck"
     >
     </el-tree>
-
+    <!-- 模块对应的操作 -->
     <div class="module_operation">
       操作：
       <el-checkbox
@@ -249,6 +249,8 @@ export default {
       if (!res) {
         return false
       }
+      this.isEditor = false
+      this.$emit('saveModuleAuth')
       this.$message({
         type: 'success',
         message: '操作成功'

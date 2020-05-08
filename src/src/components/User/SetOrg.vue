@@ -77,6 +77,7 @@ export default {
       if (!res) {
         return false
       }
+      this.isEditor = false
       this.$emit('saveOrgs')
       this.$message({
         type: 'success',

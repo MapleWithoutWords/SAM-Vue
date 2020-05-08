@@ -119,22 +119,23 @@ export default {
     },
     // 保存操作
     async btnSave() {
-      if (this.isEditor) {
-        var result = await this.$msgbox
-          .confirm('您有未保存的操作, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          })
-          .catch(error => error)
-        if (result !== 'confirm') {
-          this.queryInfo.appId = this.queryInfo.oldAppId
-          return false
-        }
-      }
+      // if (this.isEditor) {
+      //   var result = await this.$msgbox
+      //     .confirm('您有未保存的操作, 是否继续?', '提示', {
+      //       confirmButtonText: '确定',
+      //       cancelButtonText: '取消',
+      //       type: 'warning'
+      //     })
+      //     .catch(error => error)
+      //   if (result !== 'confirm') {
+      //     this.queryInfo.appId = this.queryInfo.oldAppId
+      //     return false
+      //   }
+      // }
       this.setUserGroup.userGroupRightTree = Array.from(
         new Set(this.setUserGroup.userGroupRightTree)
       )
+      this.isEditor = false
       var res = await this.$sendAsync({
         url: `/api/PmsUser/set_user_groups/${this.queryInfo.appId}/${this.userId}`,
         method: 'post',

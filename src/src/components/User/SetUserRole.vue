@@ -109,6 +109,8 @@ export default {
       if (!res) {
         return false
       }
+      this.isEditor = false
+      this.$emit('save')
       this.$message({
         type: 'success',
         message: '操作成功'
