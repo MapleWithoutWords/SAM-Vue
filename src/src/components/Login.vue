@@ -45,7 +45,8 @@ export default {
       login: {
         account: '1028',
         password: '123456',
-        appId: 'fe2c0892-ebc4-42f8-bc90-c4d4a15a2fef'
+        appId: this.$appKey,
+        time: new Date().getTime()
       },
       rules: {
         account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
@@ -62,13 +63,15 @@ export default {
         if (!result) {
           return false
         }
-        console.log(this.login)
-        const that = this
+        var pubkey = await this.$getRSAPubKey()
+        this.$encrypt.setPublicKey(pubkey)
+        var str = this.$encrypt.encrypt(JSON.stringify(this.login))
+        // const that = this
         // eslint-disable-next-line no-unused-vars
         var res = await this.$http({
-          url: '/api/login',
+          url: '/api/rsalogin',
           method: 'post',
-          data: that.login
+          data: { enStr: str }
         })
         if (!res) {
           this.$message.error('网络错误')

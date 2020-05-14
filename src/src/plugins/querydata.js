@@ -70,3 +70,13 @@ Vue.prototype.$sendAsync = async function(config) {
   var resData = this.$validResponse(res)
   return resData
 }
+Vue.prototype.$getRSAPubKey = async function() {
+  if (!this.$rsaPubKey) {
+    var response = await this.$sendAsync({
+      method: 'get',
+      url: '/api/get_publickey'
+    })
+    this.$rsaPubKey = response.data
+  }
+  return this.$rsaPubKey
+}

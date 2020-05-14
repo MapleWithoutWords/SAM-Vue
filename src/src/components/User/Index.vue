@@ -478,6 +478,11 @@ export default {
         var res = null
         if (this.isAdd) {
           // 新增
+          // 加密密码
+          this.createOrEdirotDialog.form.password = this.$md5(
+            this.createOrEdirotDialog.form.account +
+              this.createOrEdirotDialog.form.password
+          )
           res = await this.$http({
             url: '/api/PmsUser/addnew',
             method: 'put',

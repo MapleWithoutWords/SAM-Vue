@@ -205,6 +205,7 @@ export default {
         this.operationForm.operationValues = [0]
         this.operationForm.checkAll = false
       }
+      // 过滤掉未勾选的模块授权信息
       this.userModuleAuth = this.userModuleAuth.filter(
         e => checkStatus.checkedKeys.findIndex(x => x === e.moduleId) > -1
       )
