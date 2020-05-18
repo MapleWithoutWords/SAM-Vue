@@ -12,7 +12,7 @@ import md5 from 'md5'
 
 var encrypt = new JSEncrypt()
 
-axios.defaults.baseURL = 'http://127.0.0.1:5000'
+axios.defaults.baseURL = 'http://www.samapi.norain.top/'
 var appKey = 'fe2c0892-ebc4-42f8-bc90-c4d4a15a2fef'
 Vue.prototype.$appKey = appKey
 

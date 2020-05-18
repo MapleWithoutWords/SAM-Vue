@@ -1,20 +1,45 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../components/Login.vue'
-import Home from '../components/Home.vue'
-import Welcome from '../components/Welcome.vue'
-import UserIndex from '../components/User/Index.vue'
-import AppIndex from '../components/App/AppIndex.vue'
-import AppOperation from '../components/App/AppOperation.vue'
-import AppModule from '../components/App/AppModule.vue' // UserGroupIndex
-import RoleIndex from '../components/Role/RoleIndex.vue'
-import UserGroupIndex from '../components/UserGroup/UserGroupIndex.vue'
-import OrgIndex from '../components/Org/OrgIndex.vue'
 
-import ResourceIndex from '../components/Resource/ResourceIndex.vue'
-import ResourceTypeIndex from '../components/Resource/ResourceTypeIndex.vue'
+const Login = () =>
+  import(/* webpackChunkName:"login_home_welcome" */ '../components/Login.vue')
+const Home = () =>
+  import(/* webpackChunkName:"login_home_welcome" */ '../components/Home.vue')
+const Welcome = () =>
+  import(
+    /* webpackChunkName:"login_home_welcome" */ '../components/Welcome.vue'
+  )
 
-import DicItem from '../components/Setting/DicItem.vue'
+const UserIndex = () =>
+  import(/* webpackChunkName:"user_org" */ '../components/User/Index.vue')
+const OrgIndex = () =>
+  import(/* webpackChunkName:"user_org" */ '../components/Org/OrgIndex.vue')
+
+const AppIndex = () =>
+  import(/* webpackChunkName:"app_role" */ '../components/App/AppIndex.vue')
+const AppModule = () =>
+  import(/* webpackChunkName:"app_role" */ '../components/App/AppModule.vue')
+const AppOperation = () =>
+  import(/* webpackChunkName:"app_role" */ '../components/App/AppOperation.vue')
+const RoleIndex = () =>
+  import(/* webpackChunkName:"app_role" */ '../components/Role/RoleIndex.vue')
+const UserGroupIndex = () =>
+  import(
+    /* webpackChunkName:"app_role" */ '../components/UserGroup/UserGroupIndex.vue'
+  )
+
+const ResourceIndex = () =>
+  import(
+    /* webpackChunkName:"resource_setting" */ '../components/Resource/ResourceIndex.vue'
+  )
+const ResourceTypeIndex = () =>
+  import(
+    /* webpackChunkName:"resource_setting" */ '../components/Resource/ResourceTypeIndex.vue'
+  )
+const DicItem = () =>
+  import(
+    /* webpackChunkName:"resource_setting" */ '../components/Setting/DicItem.vue'
+  )
 
 Vue.use(VueRouter)
 

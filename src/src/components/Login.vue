@@ -43,8 +43,8 @@ export default {
   data() {
     return {
       login: {
-        account: '1028',
-        password: '123456',
+        account: '',
+        password: '',
         appId: this.$appKey,
         time: new Date().getTime()
       },
@@ -77,7 +77,6 @@ export default {
           this.$message.error('网络错误')
           return false
         }
-        debugger
         if (res.code !== 0) {
           this.$message.error(res.msg)
           return false
