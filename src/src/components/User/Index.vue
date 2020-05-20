@@ -18,7 +18,7 @@
             >搜索</el-button
           >
         </el-col>
-        <el-col :span="2" :offset="15">
+        <el-col :span="2" :offset="16">
           <el-button
             type="primary"
             @click="createUser()"
@@ -109,6 +109,7 @@
                 circle
               ></el-button>
             </el-tooltip>
+
             <!-- 分配角色操作 -->
             <el-tooltip
               class="item"
@@ -129,6 +130,27 @@
               ></el-button>
             </el-tooltip>
 
+            <!-- 修改密码 -->
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="修改密码"
+              placement="top"
+            >
+              <el-button
+                type="warning"
+                size="mini"
+                icon="el-icon-s-goods"
+                @click="
+                  updatePwdDialog.visable = true
+                  updatePwdDialog.data.id = scope.row.id
+                  updatePwdDialog.data.account = scope.row.account
+                  updatePwdDialog.title = `修改密码-【${scope.row.trueName}】`
+                "
+                circle
+              ></el-button>
+            </el-tooltip>
+
             <el-button
               type="primary"
               size="mini"
@@ -136,6 +158,7 @@
               @click="editorUser(scope.$index, scope.row)"
               circle
             ></el-button>
+
             <el-button
               type="danger"
               size="mini"
@@ -243,12 +266,15 @@
     <el-dialog
       :title="updatePwdDialog.title"
       :visible.sync="updatePwdDialog.visable"
+      width="30%"
     >
-      <el-form :model="updatePwdDialog.data">
-        <el-form-item label="新密码：" :label-width="80">
+      <el-form :model="updatePwdDialog.data" label-width="80px">
+        <el-form-item label="新密码：">
           <el-input
             v-model="updatePwdDialog.data.password"
             autocomplete="off"
+            type="password"
+            :show-password="true"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -383,6 +409,7 @@ export default {
         visable: false,
         data: {
           id: '',
+          account: '',
           password: ''
         },
         title: ''
@@ -516,15 +543,23 @@ export default {
         return false
       })
     },
+
+    // 修改密码
     async updatePassword() {
       const that = this
+      debugger
+      that.updatePwdDialog.data.password = this.$md5(
+        that.updatePwdDialog.data.account + that.updatePwdDialog.data.password
+      )
       var res = await this.$http({
         url:
           // eslint-disable-next-line no-template-curly-in-string
-          '/api/PmsUser//api/PmsUser/update_pwd',
+          '/api/PmsUser/update_pwd',
         method: 'post',
         data: that.updatePwdDialog.data
       })
+
+      this.updatePwdDialog.data.password = ''
       if (res === null) {
         this.$message.error('网络错误')
         return false

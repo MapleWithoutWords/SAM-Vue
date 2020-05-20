@@ -23,7 +23,7 @@
         </el-col>
         <el-col v-show="queryInfo.parentId" :span="2" :offset="14">
           <el-button type="primary" @click="backUp()" icon="el-icon-back"
-            >返回上一级</el-button
+            >返回顶级</el-button
           >
         </el-col>
         <el-col :span="2" :offset="queryInfo.parentId == '' ? 16 : 0">

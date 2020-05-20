@@ -36,7 +36,7 @@
             >搜索</el-button
           >
         </el-col>
-        <el-col :span="2" :offset="10">
+        <el-col :span="2" :offset="12">
           <el-button
             type="primary"
             @click="createData()"

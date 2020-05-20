@@ -21,7 +21,7 @@
             >搜索</el-button
           >
         </el-col>
-        <el-col :span="2" :offset="14">
+        <el-col :span="2" :offset="16">
           <el-button
             type="primary"
             @click="createData()"
