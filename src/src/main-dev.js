@@ -30,32 +30,36 @@ var count = 0
 
 // 添加响应拦截器
 axios.interceptors.response.use(
-  async function(response) {
+  function(response) {
     nprogress.done()
     console.log(response)
+    // debugger
     // 如果出现401则刷新token，当刷新token超过3次则刷新页面
     if (response.status === 401) {
+      debugger
       if (count > 3) {
         window.location.reload()
       }
       count++
-      var tokenRes = JSON.parse(window.sessionStorage.getItem('token'))
-      var tokenData = await axios({
-        url: '/api/refresh_token',
-        method: 'post',
-        data: { appId: appKey, refreshToken: tokenRes.refresh_token }
-      })
-      window.sessionStorage.setItem('token', JSON.stringify(tokenData))
-      var res = await axios(response.config)
-      return res
+      // var tokenRes = JSON.parse(window.sessionStorage.getItem('token'))
+      // var tokenData = await axios({
+      //   url: '/api/refresh_token',
+      //   method: 'post',
+      //   data: { appId: appKey, refreshToken: tokenRes.refresh_token }
+      // })
+      // window.sessionStorage.setItem('token', JSON.stringify(tokenData))
+      // var res = await axios(response.config)
+      // return res
     }
 
     // 对响应数据做点什么
     var data = response.data
     return data
   },
-  function(error) {
+  async function(error) {
     nprogress.done()
+    console.log(error.response)
+
     console.debug(error)
     // 对响应错误做点什么
     // eslint-disable-next-line prefer-promise-reject-errors

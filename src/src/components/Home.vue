@@ -8,7 +8,7 @@
           @click="asideToggle"
         ></i>
         <img src="../assets/logo.png" alt="SAM管理系统" />
-        <span>SAM管理系统</span>
+        <span>PMS管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出登录</el-button>
     </el-header>
@@ -40,6 +40,14 @@
               <i class="el-icon-s-check"></i>
               <span>机构管理</span>
             </el-menu-item>
+            <el-menu-item index="/jobtype">
+              <i class="el-icon-s-check"></i>
+              <span>岗位类别管理</span>
+            </el-menu-item>
+            <el-menu-item index="/job">
+              <i class="el-icon-s-check"></i>
+              <span>岗位管理</span>
+            </el-menu-item>
           </el-submenu>
           <el-submenu index="1-4">
             <template slot="title">
@@ -59,7 +67,7 @@
               <span>应用系统模块</span>
             </el-menu-item>
             <el-menu-item index="/roleIndex">
-              <i class="el-icon-menu"></i>
+              <i class="el-icon-user"></i>
               <span>应用系统角色</span>
             </el-menu-item>
             <el-menu-item index="/UserGroupIndex">

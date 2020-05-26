@@ -51,6 +51,7 @@
         <!--操作列-->
         <el-table-column label="操作">
           <template slot-scope="scope">
+            <!-- 分配机构 -->
             <el-tooltip
               class="item"
               effect="dark"
@@ -65,6 +66,26 @@
                   setOrgDialog.visible = true
                   setOrgDialog.empId = scope.row.employeeId
                   setOrgDialog.title = `分配机构-【${scope.row.trueName}】`
+                "
+                circle
+              ></el-button>
+            </el-tooltip>
+
+            <!-- 分配岗位 -->
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="分配岗位"
+              placement="top"
+            >
+              <el-button
+                type="warning"
+                size="mini"
+                icon="el-icon-postcard"
+                @click="
+                  setJobDialog.visible = true
+                  setJobDialog.empId = scope.row.employeeId
+                  setJobDialog.title = `分配岗位-【${scope.row.trueName}】`
                 "
                 circle
               ></el-button>
@@ -120,7 +141,7 @@
               <el-button
                 type="warning"
                 size="mini"
-                icon="el-icon-s-custom"
+                icon="el-icon-user"
                 @click="
                   setUserRoleDialog.visible = true
                   setUserRoleDialog.userId = scope.row.id
@@ -269,7 +290,7 @@
       width="30%"
     >
       <el-form :model="updatePwdDialog.data" label-width="80px">
-        <el-form-item label="新密码：">
+        <el-form-item label="新密码：" :required="true">
           <el-input
             v-model="updatePwdDialog.data.password"
             autocomplete="off"
@@ -345,6 +366,22 @@
         @cancel="setUserRoleDialog.visible = false"
       ></sam-user-role>
     </el-dialog>
+
+    <!-- 分配岗位 -->
+    <el-dialog
+      top="5vh"
+      width="40%"
+      :title="setJobDialog.title"
+      :visible.sync="setJobDialog.visible"
+      direction="ltr"
+    >
+      <sam-set-job
+        :empId="setJobDialog.empId"
+        :time="new Date().getTime()"
+        @save="setJobDialog.visible = false"
+        @cancel="setJobDialog.visible = false"
+      ></sam-set-job>
+    </el-dialog>
   </div>
 </template>
 
@@ -357,6 +394,8 @@ import moduleAuth from './ModuleAuth.vue'
 import setUserGroup from './SetUserGroup'
 // 分配角色
 import setUserRole from './SetUserRole'
+// 分配岗位
+import SetJob from './SetJob'
 
 export default {
   data() {
@@ -417,6 +456,12 @@ export default {
       // 分配机构
       setOrgDialog: {
         title: '分配机构',
+        visible: false,
+        empId: '18063dc9-35e9-4f50-a4df-7ec24891b880'
+      },
+      // 分配岗位
+      setJobDialog: {
+        title: '分配岗位',
         visible: false,
         empId: '18063dc9-35e9-4f50-a4df-7ec24891b880'
       },
@@ -593,7 +638,9 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     'sam-user-group': setUserGroup,
     // eslint-disable-next-line vue/no-unused-components
-    'sam-user-role': setUserRole
+    'sam-user-role': setUserRole,
+    // eslint-disable-next-line vue/no-unused-components
+    'sam-set-job': SetJob
   }
 }
 </script>

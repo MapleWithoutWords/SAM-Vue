@@ -14,6 +14,10 @@ const UserIndex = () =>
   import(/* webpackChunkName:"user_org" */ '../components/User/Index.vue')
 const OrgIndex = () =>
   import(/* webpackChunkName:"user_org" */ '../components/Org/OrgIndex.vue')
+const jobType = () =>
+  import(/* webpackChunkName:"user_org" */ '../components/Job/JobCategory.vue')
+const job = () =>
+  import(/* webpackChunkName:"user_org" */ '../components/Job/Job.vue')
 
 const AppIndex = () =>
   import(/* webpackChunkName:"app_role" */ '../components/App/AppIndex.vue')
@@ -99,6 +103,14 @@ const routes = [
       {
         path: '/orgIndex',
         component: OrgIndex
+      },
+      {
+        path: '/jobType',
+        component: jobType
+      },
+      {
+        path: '/job',
+        component: job
       }
     ]
   }
@@ -115,7 +127,6 @@ router.beforeEach((to, form, next) => {
     }
   }
 
-  console.log(to)
   if (to.path !== '/login') {
     if (token === undefined || token === null) {
       return next('/login')

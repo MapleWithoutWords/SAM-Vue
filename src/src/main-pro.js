@@ -17,14 +17,20 @@ var appKey = 'fe2c0892-ebc4-42f8-bc90-c4d4a15a2fef'
 Vue.prototype.$appKey = appKey
 
 // 添加请求拦截
-axios.interceptors.request.use(config => {
-  nprogress.start()
-  var tokenRes = JSON.parse(window.sessionStorage.getItem('token'))
-  if (tokenRes) {
-    config.headers.Authorization = 'Bearer ' + tokenRes.access_token
+axios.interceptors.request.use(
+  config => {
+    nprogress.start()
+    var tokenRes = JSON.parse(window.sessionStorage.getItem('token'))
+    if (tokenRes) {
+      config.headers.Authorization = 'Bearer ' + tokenRes.access_token
+    }
+    return config
+  },
+  function(error) {
+    debugger
+    console.log(error)
   }
-  return config
-})
+)
 // eslint-disable-next-line no-unused-vars
 var count = 0
 
@@ -56,7 +62,7 @@ axios.interceptors.response.use(
   },
   function(error) {
     nprogress.done()
-    console.debug(error)
+    console.log(error)
     // 对响应错误做点什么
     // eslint-disable-next-line prefer-promise-reject-errors
     return null
