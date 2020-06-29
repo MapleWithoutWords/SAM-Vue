@@ -62,6 +62,7 @@
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="parentName" label="父级模块"></el-table-column>
         <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column prop="url" label="Url"></el-table-column>
         <el-table-column prop="childCount" label="子模块数"></el-table-column>
         <el-table-column prop="description" label="描述"></el-table-column>
         <!--操作列-->
@@ -151,6 +152,9 @@
         <el-form-item label="模块地址" :required="true" prop="url">
           <el-input v-model="createOrEdirotDialog.form.url"></el-input>
         </el-form-item>
+        <el-form-item label="图标" :required="true" prop="icon">
+          <el-input v-model="createOrEdirotDialog.form.icon"></el-input>
+        </el-form-item>
 
         <el-form-item label="配置">
           <el-checkbox
@@ -179,30 +183,6 @@
             type="textarea"
             v-model="createOrEdirotDialog.form.description"
           ></el-input>
-        </el-form-item>
-        <el-form-item label="操作">
-          <div v-if="appOperations.length > 0">
-            <el-checkbox
-              :indeterminate="createOrEdirotDialog.isIndeterminate"
-              v-model="createOrEdirotDialog.checkAll"
-              @change="handleCheckAllChange"
-              >全选</el-checkbox
-            >
-            <div style="margin: 10px 0;"></div>
-            <div class="chbox_operations">
-              <el-checkbox-group
-                v-model="createOrEdirotDialog.form.operationIds"
-                @change="handleOperationChange"
-              >
-                <el-checkbox
-                  v-for="(item, index) in appOperations"
-                  :key="index"
-                  :label="item.id"
-                  >{{ item.name }}</el-checkbox
-                >
-              </el-checkbox-group>
-            </div>
-          </div>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">确认</el-button>
@@ -235,8 +215,6 @@ export default {
       moduleData: [],
       // 所有应用系统
       appList: [],
-      // 应用系统操作
-      appOperations: [{}],
       // 编辑新增数据
       createOrEdirotDialog: {
         // 对话框标题
@@ -255,6 +233,7 @@ export default {
           name: '',
           url: 'none',
           seqNo: '0',
+          icon: 'none',
           isActivity: true,
           isEnd: false,
           isOpenNew: false,
@@ -285,12 +264,6 @@ export default {
         this.queryInfo.current = res.page?.current
         this.queryInfo.count = res.count
         this.queryInfo.pageSize = res.page?.pageSize
-
-        var appOperations = await this.$sendAsync({
-          url: '/api/PmsAppOperation/getbyappid/' + this.queryInfo.appId,
-          method: 'get'
-        })
-        this.appOperations = appOperations.data
       }
     },
     // 创建
@@ -395,21 +368,6 @@ export default {
       this.queryInfo.parentId = ''
       this.queryInfo.parentName = ''
       this.loadData()
-    },
-    // 单个选择操作
-    handleOperationChange(value) {
-      const checkedCount = value.length
-      this.createOrEdirotDialog.checkAll =
-        checkedCount === this.appOperations.length
-      this.createOrEdirotDialog.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.appOperations.length
-    },
-    // 选中所有操作
-    handleCheckAllChange(val) {
-      this.createOrEdirotDialog.form.operationIds = val
-        ? this.appOperations.map(e => e.id)
-        : []
-      this.createOrEdirotDialog.isIndeterminate = false
     }
   },
   mounted: async function() {

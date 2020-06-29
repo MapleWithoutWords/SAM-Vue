@@ -6,87 +6,110 @@
       <el-breadcrumb-item>API资源管理</el-breadcrumb-item>
       <el-breadcrumb-item>应用系统操作</el-breadcrumb-item>
     </el-breadcrumb>
-    <!--主体-->
-    <el-card>
-      <!--搜索-->
-      <el-row :gutter="15">
-        <el-col :span="4">
-          <el-select
-            v-model="queryInfo.applicationId"
-            @change="loadData()"
-            placeholder="请选择应用系统"
-          >
-            <el-option
-              v-for="item in appList"
-              :key="item.value"
-              :label="item.name"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="4">
-          <el-input
-            v-model="queryInfo.name"
-            placeholder="请输入名称"
-          ></el-input>
-        </el-col>
-        <el-col :span="2">
-          <el-button type="primary" @click="loadData()" icon="el-icon-search"
-            >搜索</el-button
-          >
-        </el-col>
-        <el-col :span="2" :offset="12">
-          <el-button
-            type="primary"
-            @click="createData()"
-            icon="el-icon-circle-plus-outline"
-            >添加</el-button
-          >
-        </el-col>
-      </el-row>
 
-      <!-- 表格区域-->
-      <el-table :data="operaData" :stripe="true" :border="true">
-        <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="appName" label="应用系统"></el-table-column>
-        <el-table-column prop="name" label="名称"></el-table-column>
-        <el-table-column
-          prop="operationSourceName"
-          label="操作类型"
-        ></el-table-column>
-        <el-table-column prop="description" label="描述"></el-table-column>
-        <!--操作列-->
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-edit"
-              @click="editorData(scope.$index, scope.row)"
-              circle
-            ></el-button>
-            <el-button
-              type="danger"
-              size="mini"
-              @click="delData(scope.$index, scope.row)"
-              icon="el-icon-delete"
-              circle
-            ></el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
-    <!-- 分页 -->
-    <el-pagination
-      @size-change="pageSizeChange"
-      @current-change="pageCurrentChange"
-      :current-page="queryInfo.current"
-      :page-sizes="[1, 10, 20, 50, 100]"
-      :page-size="queryInfo.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="queryInfo.count"
-    ></el-pagination>
+    <el-row>
+      <el-col :span="4">
+        <div class="moduleTreeDiv">
+          <span class="moduleTreeTitle">模块</span>
+          <el-tree
+            ref="moduleTree"
+            :data="allModules"
+            :props="defaultProps"
+            @node-click="handleModuleNodeClick"
+            default-expand-all
+            check-strictly
+          ></el-tree>
+        </div>
+      </el-col>
+      <el-col :span="19" style="margin-left:15px">
+        <!--主体-->
+        <el-card>
+          <!--搜索-->
+          <el-row :gutter="15">
+            <el-col :span="4">
+              <el-select
+                v-model="queryInfo.applicationId"
+                @change="loadModuleData()"
+                placeholder="请选择应用系统"
+              >
+                <el-option
+                  v-for="item in appList"
+                  :key="item.value"
+                  :label="item.name"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="4">
+              <el-input
+                v-model="queryInfo.name"
+                placeholder="请输入名称"
+              ></el-input>
+            </el-col>
+            <el-col :span="2">
+              <el-button
+                type="primary"
+                @click="loadData()"
+                icon="el-icon-search"
+                >搜索</el-button
+              >
+            </el-col>
+            <el-col :span="2" :offset="12">
+              <el-button
+                type="primary"
+                @click="createData()"
+                icon="el-icon-circle-plus-outline"
+                >添加</el-button
+              >
+            </el-col>
+          </el-row>
+
+          <!-- 表格区域-->
+          <el-table :data="operaData" :stripe="true" :border="true">
+            <el-table-column type="selection"></el-table-column>
+            <el-table-column prop="appName" label="应用系统"></el-table-column>
+            <el-table-column prop="name" label="名称"></el-table-column>
+            <el-table-column prop="url" label="地址"></el-table-column>
+            <el-table-column prop="icon" label="图标"></el-table-column>
+            <el-table-column
+              prop="operationSourceName"
+              label="操作类型"
+            ></el-table-column>
+            <el-table-column prop="description" label="描述"></el-table-column>
+            <!--操作列-->
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  type="primary"
+                  size="mini"
+                  icon="el-icon-edit"
+                  @click="editorData(scope.$index, scope.row)"
+                  circle
+                ></el-button>
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delData(scope.$index, scope.row)"
+                  icon="el-icon-delete"
+                  circle
+                ></el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+        <!-- 分页 -->
+        <el-pagination
+          @size-change="pageSizeChange"
+          @current-change="pageCurrentChange"
+          :current-page="queryInfo.current"
+          :page-sizes="[1, 10, 20, 50, 100]"
+          :page-size="queryInfo.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="queryInfo.count"
+        ></el-pagination>
+      </el-col>
+    </el-row>
 
     <!-- 新增编辑对话框 -->
     <el-dialog
@@ -108,8 +131,23 @@
             :disabled="true"
           ></el-input>
         </el-form-item>
+        <el-form-item label="模块名">
+          <el-input
+            v-model="createOrEdirotDialog.moduleName"
+            :disabled="true"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="操作名" :required="true" prop="name">
           <el-input v-model="createOrEdirotDialog.form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :required="true" prop="url">
+          <el-input
+            v-model="createOrEdirotDialog.form.url"
+            placeholder="接口地址"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="操作图标" prop="icon">
+          <el-input v-model="createOrEdirotDialog.form.icon"></el-input>
         </el-form-item>
         <el-form-item label="操作类型" :required="true">
           <el-select
@@ -151,6 +189,7 @@ export default {
         name: null,
         current: 1,
         applicationId: '',
+        moduleId: '',
         appName: '',
         pageSize: 10,
         count: 0
@@ -159,6 +198,12 @@ export default {
       operaData: [],
       // 所有应用系统
       appList: [],
+      defaultProps: {
+        children: 'children',
+        label: 'title'
+      },
+      // 模块树
+      allModules: [],
       createOrEdirotDialog: {
         dialogTitle: '资源类型操作',
         visible: false,
@@ -169,6 +214,9 @@ export default {
           description: 'none',
           optionSource: '',
           applicationId: '',
+          moduleId: '',
+          icon: 'none',
+          url: '',
           appName: '',
           id: ''
         },
@@ -197,6 +245,10 @@ export default {
     },
     // 创建
     createData() {
+      if (!this.createOrEdirotDialog.form.moduleId) {
+        this.$message('请选择模块')
+        return false
+      }
       this.createOrEdirotDialog.dialogTitle = '新增资源类型'
       this.createOrEdirotDialog.isAdd = false
       this.createOrEdirotDialog.visible = true
@@ -205,6 +257,7 @@ export default {
         this.$options.data().createOrEdirotDialog.form
       )
       this.createOrEdirotDialog.form.applicationId = this.queryInfo.applicationId
+      this.createOrEdirotDialog.form.moduleId = this.queryInfo.moduleId
       var appName = this.appList[
         this.appList.findIndex(e => e.value === this.queryInfo.applicationId)
       ]?.name
@@ -272,6 +325,36 @@ export default {
     pageCurrentChange(val) {
       this.queryInfo.current = val
       this.loadData()
+    },
+    // 树组件单击事件
+    handleModuleNodeClick(data, node) {
+      console.log(data, node)
+      if (data.children.length > 0) {
+        node.expanded = true
+      }
+      this.queryInfo.moduleId = data.id
+      this.createOrEdirotDialog.moduleName = data.title
+      this.createOrEdirotDialog.form.moduleId = data.id
+      this.loadData()
+      return false
+    },
+    async loadModuleData() {
+      var moduleTreeRes = await this.$sendAsync({
+        url: `/api/PmsAppModule/get_module_tree/${this.queryInfo.applicationId}`,
+        method: 'get'
+      })
+      this.allModules = moduleTreeRes.data
+      if (!this.allModules || this.allModules.length < 1) {
+        this.createOrEdirotDialog.form.moduleId = ''
+        this.createOrEdirotDialog.moduleName = ''
+        // this.$router.push('/appmodule')
+        return false
+      }
+      console.log(this.allModules[0])
+      this.queryInfo.moduleId = moduleTreeRes.data[0].id
+      this.createOrEdirotDialog.moduleName = moduleTreeRes.data[0].title
+      this.createOrEdirotDialog.form.moduleId = moduleTreeRes.data[0].id
+      this.loadData()
     }
   },
   mounted: async function() {
@@ -289,9 +372,23 @@ export default {
       method: 'get'
     })
     this.createOrEdirotDialog.operationSources = allOpearSources.data
+
+    this.loadModuleData()
     this.loadData()
   }
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.moduleTreeDiv {
+  height: 74vh;
+  border: 1px solid gainsboro;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: white;
+}
+
+.moduleTreeTitle {
+  color: darkgray;
+}
+</style>

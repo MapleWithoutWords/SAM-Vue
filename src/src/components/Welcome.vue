@@ -84,6 +84,7 @@ export default {
       })
       if (res == null) {
         this.$message('网络错误')
+        return false
       }
       this.form = res.data
     }

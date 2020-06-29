@@ -36,10 +36,8 @@ axios.interceptors.response.use(
     // debugger
     // 如果出现401则刷新token，当刷新token超过3次则刷新页面
     if (response.status === 401) {
-      debugger
-      if (count > 3) {
-        window.location.reload()
-      }
+      window.sessionStorage.clear()
+      Vue.prototype.$router.push('/login')
       count++
       // var tokenRes = JSON.parse(window.sessionStorage.getItem('token'))
       // var tokenData = await axios({

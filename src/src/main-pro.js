@@ -27,7 +27,6 @@ axios.interceptors.request.use(
     return config
   },
   function(error) {
-    debugger
     console.log(error)
   }
 )

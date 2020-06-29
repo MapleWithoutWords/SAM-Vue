@@ -592,7 +592,6 @@ export default {
     // 修改密码
     async updatePassword() {
       const that = this
-      debugger
       that.updatePwdDialog.data.password = this.$md5(
         that.updatePwdDialog.data.account + that.updatePwdDialog.data.password
       )

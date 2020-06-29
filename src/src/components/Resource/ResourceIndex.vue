@@ -237,7 +237,6 @@ export default {
             var editorIndex = that.appData.findIndex(
               e => e.id === editorResData.data.id
             )
-            debugger
             if (editorIndex !== -1) {
               Object.assign(that.appData[editorIndex], editorResData.data)
             }
