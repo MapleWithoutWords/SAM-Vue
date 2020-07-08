@@ -151,6 +151,7 @@
 
     <!-- 新增编辑对话框 -->
     <el-dialog
+      :close-on-click-modal="false"
       :title="createOrEdirotDialog.dialogTitle"
       :visible.sync="createOrEdirotDialog.visible"
     >
@@ -190,6 +191,7 @@
 
     <!-- 模块授权 -->
     <el-dialog
+      :close-on-click-modal="false"
       :title="RoleModuleDialog.dialogTitle"
       :visible.sync="RoleModuleDialog.visible"
     >

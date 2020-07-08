@@ -37,7 +37,7 @@ axios.interceptors.response.use(
     // 如果出现401则刷新token，当刷新token超过3次则刷新页面
     if (response.status === 401) {
       window.sessionStorage.clear()
-      Vue.prototype.$router.push('/login')
+      router.push('/login')
       count++
       // var tokenRes = JSON.parse(window.sessionStorage.getItem('token'))
       // var tokenData = await axios({
@@ -56,8 +56,13 @@ axios.interceptors.response.use(
   },
   async function(error) {
     nprogress.done()
+    debugger
     console.log(error.response)
-
+    if (error.response.status === 401) {
+      window.sessionStorage.clear()
+      router.push('/login')
+      return null
+    }
     console.debug(error)
     // 对响应错误做点什么
     // eslint-disable-next-line prefer-promise-reject-errors

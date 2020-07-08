@@ -354,5 +354,8 @@ export default {
   .el-dialog {
     width: 40% !important;
   }
+  .el-checkbox{
+    line-height: 26px;
+  }
 }
 </style>

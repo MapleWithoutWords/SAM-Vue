@@ -71,7 +71,7 @@ export default {
     },
     async init() {
       var res = await this.$sendAsync({
-        url: 'api/app/get_res_by_appdid/' + this.appId,
+        url: '/api/app/get_res_by_appdid/' + this.appId,
         method: 'get'
       })
       this.setResource.resourceLeftTree = res.data

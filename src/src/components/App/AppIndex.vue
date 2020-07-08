@@ -128,6 +128,7 @@
 
     <!-- 新增编辑对话框 -->
     <el-dialog
+      :close-on-click-modal="false"
       :title="createOrEdirotDialog.dialogTitle"
       :visible.sync="createOrEdirotDialog.visible"
     >
@@ -198,6 +199,7 @@
     </el-dialog>
 
     <el-dialog
+      :close-on-click-modal="false"
       :title="setResource.title"
       :visible.sync="setResource.visible"
       width="40%"

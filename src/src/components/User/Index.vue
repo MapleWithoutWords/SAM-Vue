@@ -204,6 +204,7 @@
 
     <!-- 新增编辑对话框 -->
     <el-dialog
+      :close-on-click-modal="false"
       :title="createOrEdirotDialog.dialogTitle"
       :visible.sync="createOrEdirotDialog.visible"
     >
@@ -285,6 +286,7 @@
 
     <!-- 修改密码对话框 -->
     <el-dialog
+      :close-on-click-modal="false"
       :title="updatePwdDialog.title"
       :visible.sync="updatePwdDialog.visable"
       width="30%"
@@ -307,6 +309,7 @@
 
     <!-- 分配机构对话框 -->
     <el-dialog
+      :close-on-click-modal="false"
       top="5vh"
       :title="setOrgDialog.title"
       :visible.sync="setOrgDialog.visible"
@@ -322,6 +325,7 @@
 
     <!-- 模块授权 -->
     <el-dialog
+      :close-on-click-modal="false"
       top="5vh"
       :title="moduleAuthDialog.title"
       :visible.sync="moduleAuthDialog.visible"
@@ -339,6 +343,7 @@
     <el-dialog
       top="5vh"
       width="40%"
+      :close-on-click-modal="false"
       :title="setUserGroupDialog.title"
       :visible.sync="setUserGroupDialog.visible"
       direction="ltr"
@@ -355,6 +360,7 @@
     <el-dialog
       top="5vh"
       width="40%"
+      :close-on-click-modal="false"
       :title="setUserRoleDialog.title"
       :visible.sync="setUserRoleDialog.visible"
       direction="ltr"
@@ -371,6 +377,7 @@
     <el-dialog
       top="5vh"
       width="40%"
+      :close-on-click-modal="false"
       :title="setJobDialog.title"
       :visible.sync="setJobDialog.visible"
       direction="ltr"

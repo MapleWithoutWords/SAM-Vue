@@ -7,8 +7,8 @@
           :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
           @click="asideToggle"
         ></i>
-        <img src="../assets/logo.png" alt="SAM管理系统" />
-        <span>PMS管理系统</span>
+        <img src="../assets/logo.png" alt="SPCS管理系统" />
+        <span>SPCS管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出登录</el-button>
     </el-header>
@@ -117,8 +117,14 @@ export default {
     }
   },
   methods: {
-    logout: function() {
-      window.sessionStorage.clear()
+    logout: async function() {
+      var logRes = await this.$sendAsync({
+        url: '/api/logout',
+        method: 'get'
+      })
+      if (logRes !== null) {
+        window.sessionStorage.clear()
+      }
       location.reload()
     },
     // 侧边栏折叠

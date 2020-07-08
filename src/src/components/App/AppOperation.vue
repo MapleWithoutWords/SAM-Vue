@@ -76,7 +76,7 @@
               prop="operationSourceName"
               label="操作类型"
             ></el-table-column>
-            <el-table-column prop="description" label="描述"></el-table-column>
+            <el-table-column prop="seqNo" label="排序"></el-table-column>
             <!--操作列-->
             <el-table-column label="操作">
               <template slot-scope="scope">
@@ -113,6 +113,7 @@
 
     <!-- 新增编辑对话框 -->
     <el-dialog
+      :close-on-click-modal="false"
       :title="createOrEdirotDialog.dialogTitle"
       :visible.sync="createOrEdirotDialog.visible"
     >
@@ -146,9 +147,6 @@
             placeholder="接口地址"
           ></el-input>
         </el-form-item>
-        <el-form-item label="操作图标" prop="icon">
-          <el-input v-model="createOrEdirotDialog.form.icon"></el-input>
-        </el-form-item>
         <el-form-item label="操作类型" :required="true">
           <el-select
             v-model="createOrEdirotDialog.form.optionSource"
@@ -162,6 +160,12 @@
             >
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="操作图标" prop="icon">
+          <el-input v-model="createOrEdirotDialog.form.icon"></el-input>
+        </el-form-item>
+        <el-form-item label="排序" prop="seqNo">
+          <el-input v-model="createOrEdirotDialog.form.seqNo"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input
@@ -218,6 +222,7 @@ export default {
           icon: 'none',
           url: '',
           appName: '',
+          seqNo: 0,
           id: ''
         },
         // 操作类型
@@ -249,7 +254,7 @@ export default {
         this.$message('请选择模块')
         return false
       }
-      this.createOrEdirotDialog.dialogTitle = '新增资源类型'
+      this.createOrEdirotDialog.dialogTitle = '新增应用系统操作'
       this.createOrEdirotDialog.isAdd = false
       this.createOrEdirotDialog.visible = true
       Object.assign(
@@ -266,7 +271,7 @@ export default {
     },
     // 修改
     editorData(index, data) {
-      this.createOrEdirotDialog.dialogTitle = '编辑资源类型'
+      this.createOrEdirotDialog.dialogTitle = '编辑应用系统操作'
       this.createOrEdirotDialog.isAdd = true
       this.createOrEdirotDialog.visible = true
       Object.assign(this.createOrEdirotDialog.form, data)
