@@ -7,6 +7,18 @@
     </el-breadcrumb>
     <el-card>
       <el-row :gutter="15">
+        <el-col :span="6">
+          <tenant-select
+            :tenantId="queryInfo.tenantId"
+            @selChange="
+              value => {
+                queryInfo.tenantId = value
+                loadData()
+              }
+            "
+          ></tenant-select>
+        </el-col>
+
         <el-col :span="4">
           <el-input
             v-model="queryInfo.name"
@@ -18,7 +30,7 @@
             >搜索</el-button
           >
         </el-col>
-        <el-col :span="2" :offset="16">
+        <el-col :span="2" :offset="9">
           <el-button
             type="primary"
             @click="createUser()"
@@ -320,6 +332,7 @@
         :time="new Date().getTime()"
         @saveOrgs="setOrgDialog.visible = false"
         @cancel="setOrgDialog.visible = false"
+        :tenantId="queryInfo.tenantId"
       ></sam-set-orgTree>
     </el-dialog>
 
@@ -334,6 +347,7 @@
       <sam-module-auth
         :userId="moduleAuthDialog.userId"
         :time="new Date().getTime()"
+        :tenantId="queryInfo.tenantId"
         @saveModuleAuth="moduleAuthDialog.visible = false"
         @cancel="moduleAuthDialog.visible = false"
       ></sam-module-auth>
@@ -351,6 +365,7 @@
       <sam-user-group
         :userId="setUserGroupDialog.userId"
         :time="new Date().getTime()"
+        :tenantId="queryInfo.tenantId"
         @ok="setUserGroupDialog.visible = false"
         @cancel="setUserGroupDialog.visible = false"
       ></sam-user-group>
@@ -368,6 +383,7 @@
       <sam-user-role
         :userId="setUserRoleDialog.userId"
         :time="new Date().getTime()"
+        :tenantId="queryInfo.tenantId"
         @save="setUserRoleDialog.visible = false"
         @cancel="setUserRoleDialog.visible = false"
       ></sam-user-role>
@@ -385,6 +401,7 @@
       <sam-set-job
         :empId="setJobDialog.empId"
         :time="new Date().getTime()"
+        :tenantId="queryInfo.tenantId"
         @save="setJobDialog.visible = false"
         @cancel="setJobDialog.visible = false"
       ></sam-set-job>
@@ -403,10 +420,13 @@ import setUserGroup from './SetUserGroup'
 import setUserRole from './SetUserRole'
 // 分配岗位
 import SetJob from './SetJob'
+// 租户
+import TenantSelect from '../Com/TenantSelect'
 
 export default {
   data() {
     return {
+      tenants: [],
       // 状态类型
       statusType: [
         { label: '正常', value: 0 },
@@ -418,7 +438,8 @@ export default {
         name: null,
         current: 1,
         pageSize: 10,
-        count: 0
+        count: 0,
+        tenantId: '00000000-0000-0000-0000-000000000000'
       },
       // 用户列表数据
       userData: [],
@@ -434,11 +455,12 @@ export default {
           gender: 0,
           age: 18,
           birthday: '',
-          email: '',
-          mobilePhoneNum: '',
-          thirtPartyName: '',
+          email: 'none',
+          mobilePhoneNum: 'none',
+          thirtPartyName: 'none',
           id: '',
-          workPhoneNum: ''
+          workPhoneNum: '',
+          tenantId: ''
         }
       },
       // 新增编辑表单验证规则
@@ -529,7 +551,7 @@ export default {
         this.createOrEdirotDialog.form,
         this.$options.data().createOrEdirotDialog.form
       )
-      console.log(this)
+      this.createOrEdirotDialog.form.tenantId = this.queryInfo.tenantId
     },
     // 禁用用户
     async handleDisable(index, data) {
@@ -550,7 +572,6 @@ export default {
       const that = this
       this.$refs.form.validate(async valid => {
         if (!valid) {
-          console.log('error submit!!')
           return false
         }
 
@@ -634,6 +655,11 @@ export default {
     }
   },
   mounted: async function() {
+    var tenantRes = await this.$sendAsync({
+      url: '/api/pmstenant/getbyurl',
+      method: 'get'
+    })
+    this.tenants = tenantRes.data
     this.loadData()
   },
   components: {
@@ -646,7 +672,9 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     'sam-user-role': setUserRole,
     // eslint-disable-next-line vue/no-unused-components
-    'sam-set-job': SetJob
+    'sam-set-job': SetJob,
+    // eslint-disable-next-line vue/no-unused-components
+    'tenant-select': TenantSelect
   }
 }
 </script>

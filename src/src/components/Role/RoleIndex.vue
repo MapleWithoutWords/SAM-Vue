@@ -10,6 +10,17 @@
     <el-card>
       <!--搜索-->
       <el-row :gutter="15">
+        <el-col :span="5">
+          <tenant-select
+            :tenantId="queryInfo.tenantId"
+            @selChange="
+              value => {
+                queryInfo.tenantId = value
+                loadData()
+              }
+            "
+          ></tenant-select>
+        </el-col>
         <el-col :span="4">
           <el-select
             v-model="queryInfo.applicationId"
@@ -42,12 +53,12 @@
             >搜索</el-button
           >
         </el-col>
-        <el-col v-show="queryInfo.parentId != ''" :span="2" :offset="6">
+        <el-col v-show="queryInfo.parentId != ''" :span="2">
           <el-button type="primary" @click="backUp()" icon="el-icon-back"
             >返回顶级</el-button
           >
         </el-col>
-        <el-col :span="2" :offset="queryInfo.parentId == '' ? 9 : 1">
+        <el-col :span="2" :offset="queryInfo.parentId == '' ? 3 : 1">
           <el-button
             type="primary"
             @click="createData()"
@@ -199,6 +210,7 @@
         :authGroupId="RoleModuleDialog.authGroupId"
         :appId="queryInfo.applicationId"
         :time="new Date().getTime()"
+        :tenantId="queryInfo.tenantId"
         @saveAuth="RoleModuleDialog.visible = false"
         @cancel="RoleModuleDialog.visible = false"
       ></sam-role-auth>
@@ -208,6 +220,8 @@
 
 <script>
 import roleModuleAuth from './RoleModuleAuth.vue'
+// 租户
+import TenantSelect from '../Com/TenantSelect'
 export default {
   data() {
     return {
@@ -219,6 +233,7 @@ export default {
         parentId: '',
         parentName: '',
         isContainChild: false,
+        tenantId: '00000000-0000-0000-0000-000000000000',
         current: 1,
         pageSize: 10,
         count: 0
@@ -241,6 +256,7 @@ export default {
           applicationId: '',
           parentName: '',
           name: '',
+          tenantId: '',
           remark: 'none',
           id: ''
         },
@@ -306,6 +322,8 @@ export default {
       Object.assign(this.createOrEdirotDialog.form, editorData.data)
     },
     onSubmit() {
+      // 设置tenantId
+      this.createOrEdirotDialog.form.tenantId = this.queryInfo.tenantId
       const that = this
       this.$refs.form.validate(async valid => {
         if (!valid) {
@@ -391,7 +409,9 @@ export default {
   },
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    'sam-role-auth': roleModuleAuth
+    'sam-role-auth': roleModuleAuth,
+    // eslint-disable-next-line vue/no-unused-components
+    'tenant-select': TenantSelect
   }
 }
 </script>

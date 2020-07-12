@@ -10,6 +10,17 @@
     <el-card>
       <!--搜索-->
       <el-row :gutter="15">
+        <el-col :span="5">
+          <tenant-select
+            :tenantId="queryInfo.tenantId"
+            @selChange="
+              value => {
+                queryInfo.tenantId = value
+                loadData()
+              }
+            "
+          ></tenant-select>
+        </el-col>
         <el-col :span="4">
           <el-select
             v-model="queryInfo.applicationId"
@@ -36,7 +47,7 @@
             >搜索</el-button
           >
         </el-col>
-        <el-col :span="2" :offset="12">
+        <el-col :span="2" :offset="7">
           <el-button
             type="primary"
             @click="createData()"
@@ -148,6 +159,7 @@
         :authGroupId="UserGroupModuleDialog.authGroupId"
         :appId="queryInfo.applicationId"
         :time="new Date().getTime()"
+        :tenantId="queryInfo.tenantId"
         @saveAuth="UserGroupModuleDialog.visible = false"
         @cancel="UserGroupModuleDialog.visible = false"
       ></sam-user-group-auth>
@@ -157,6 +169,8 @@
 
 <script>
 import userGroupAuth from './UserGroupAuth.vue'
+// 租户
+import TenantSelect from '../Com/TenantSelect'
 export default {
   data() {
     return {
@@ -167,6 +181,7 @@ export default {
         appName: '',
         current: 1,
         pageSize: 10,
+        tenantId: '00000000-0000-0000-0000-000000000000',
         count: 0
       },
       // 列表数据
@@ -186,6 +201,7 @@ export default {
           applicationId: '',
           name: '',
           description: 'none',
+          tenantId: '',
           id: ''
         },
         // 表单验证规则
@@ -247,6 +263,7 @@ export default {
     },
     onSubmit() {
       const that = this
+      this.createOrEdirotDialog.form.tenantId = this.queryInfo.tenantId
       this.$refs.form.validate(async valid => {
         if (!valid) {
           return false
@@ -312,7 +329,9 @@ export default {
   },
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    'sam-user-group-auth': userGroupAuth
+    'sam-user-group-auth': userGroupAuth,
+    // eslint-disable-next-line vue/no-unused-components
+    'tenant-select': TenantSelect
   }
 }
 </script>

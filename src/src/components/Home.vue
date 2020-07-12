@@ -92,11 +92,15 @@
           <el-submenu index="1-6">
             <template slot="title">
               <i class="el-icon-setting"></i>
-              <span>配置管理</span>
+              <span>系统配置管理</span>
             </template>
             <el-menu-item index="/dicitem">
               <i class="el-icon-menu"></i>
               <span>字典配置</span>
+            </el-menu-item>
+            <el-menu-item index="/tenantIndex">
+              <i class="el-icon-menu"></i>
+              <span>租户管理</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>

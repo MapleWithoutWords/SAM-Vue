@@ -24,6 +24,17 @@
         <el-card>
           <!--搜索-->
           <el-row :gutter="15">
+            <el-col :span="6">
+              <tenant-select
+                :tenantId="queryInfo.tenantId"
+                @selChange="
+                  value => {
+                    queryInfo.tenantId = value
+                    loadData()
+                  }
+                "
+              ></tenant-select>
+            </el-col>
             <el-col :span="4">
               <el-input
                 v-model="queryInfo.name"
@@ -53,7 +64,7 @@
                 >搜索</el-button
               >
             </el-col>
-            <el-col :span="2" :offset="11">
+            <el-col :span="2" :offset="5">
               <el-button
                 type="primary"
                 @click="createData()"
@@ -177,6 +188,8 @@
 </template>
 
 <script>
+// 租户
+import TenantSelect from '../Com/TenantSelect'
 export default {
   data() {
     return {
@@ -188,7 +201,8 @@ export default {
         pageSize: 10,
         count: 0,
         orgId: '',
-        orgName: ''
+        orgName: '',
+        tenantId: '00000000-0000-0000-0000-000000000000'
       },
       // 列表数据
       appData: [],
@@ -206,7 +220,8 @@ export default {
           id: '',
           description: 'none',
           level: '',
-          organizationId: ''
+          organizationId: '',
+          tenantId: ''
         },
         // 表单验证规则
         validRules: {}
@@ -221,6 +236,8 @@ export default {
   methods: {
     // 加载数据
     async loadData() {
+      await this.loadOrg()
+      await this.loadJobType()
       var query = this.$getQuery(this.queryInfo)
       var res = await this.$http({
         url: '/api/pmsjob/getbyurl?' + query,
@@ -234,6 +251,29 @@ export default {
         this.queryInfo.pageSize = res.page.pageSize
       }
     },
+    // 加载机构
+    async loadOrg() {
+      var orgTreeRes = await this.$sendAsync({
+        url: `/api/PmsOrganization/getorgtree/${this.queryInfo.tenantId}`,
+        method: 'get'
+      })
+      this.allOrgs = orgTreeRes.data
+      if (this.allOrgs.length < 1) {
+        this.$router.push('/orgIndex')
+        this.$message('请添加机构')
+        return false
+      }
+      this.queryInfo.orgId = this.allOrgs[0].id
+      this.queryInfo.orgName = this.allOrgs[0].title
+      this.createOrEdirotDialog.form.organizationId = this.allOrgs[0].id
+    },
+    async loadJobType() {
+      var resData = await this.$sendAsync({
+        url: `/api/pmsjob/getjobtype/${this.queryInfo.tenantId}`,
+        method: 'get'
+      })
+      this.createOrEdirotDialog.resourceTypes = resData.data
+    },
     // 创建
     async createData() {
       this.createOrEdirotDialog.dialogTitle = '新增岗位'
@@ -243,6 +283,7 @@ export default {
         this.createOrEdirotDialog.form,
         this.$options.data().createOrEdirotDialog.form
       )
+      this.createOrEdirotDialog.form.tenantId = this.queryInfo.tenantId
     },
     // 修改
     async editorData(index, data) {
@@ -323,32 +364,18 @@ export default {
     }
   },
   mounted: async function() {
-    var resData = await this.$sendAsync({
-      url: '/api/pmsjobtype/getall',
-      method: 'get'
-    })
-    this.createOrEdirotDialog.resourceTypes = resData.data
     var jobLevelRes = await this.$sendAsync({
       url: '/api/com/getjoblevel',
       method: 'get'
     })
     this.createOrEdirotDialog.jobLevels = jobLevelRes.data
-    var orgTreeRes = await this.$sendAsync({
-      url: '/api/PmsOrganization/getorgtree',
-      method: 'get'
-    })
-    this.allOrgs = orgTreeRes.data
-    if (this.allOrgs.length < 1) {
-      this.$router.push('/orgIndex')
-      this.$message('请添加机构')
-      return false
-    }
-    this.queryInfo.orgId = this.allOrgs[0].id
-    this.queryInfo.orgName = this.allOrgs[0].title
-    this.createOrEdirotDialog.form.organizationId = this.allOrgs[0].id
     this.loadData()
   },
-  computed: {}
+  computed: {},
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    'tenant-select': TenantSelect
+  }
 }
 </script>
 
@@ -361,7 +388,7 @@ export default {
   background-color: white;
 }
 
-.orgTreeTitle{
+.orgTreeTitle {
   color: darkgray;
 }
 </style>

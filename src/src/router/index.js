@@ -44,6 +44,10 @@ const DicItem = () =>
   import(
     /* webpackChunkName:"resource_setting" */ '../components/Setting/DicItem.vue'
   )
+const TenantIndex = () =>
+  import(
+    /* webpackChunkName:"resource_setting" */ '../components/Tenant/TenantIndex.vue'
+  )
 
 Vue.use(VueRouter)
 
@@ -111,6 +115,10 @@ const routes = [
       {
         path: '/job',
         component: job
+      },
+      {
+        path: '/tenantIndex',
+        component: TenantIndex
       }
     ]
   }

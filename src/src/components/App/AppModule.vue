@@ -269,7 +269,7 @@ export default {
     },
     // 创建
     createData() {
-      this.createOrEdirotDialog.dialogTitle = '新增资源类型'
+      this.createOrEdirotDialog.dialogTitle = '新增模块'
       this.createOrEdirotDialog.isAdd = false
       this.createOrEdirotDialog.visible = true
       Object.assign(

@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  props: ['userId', 'time'],
+  props: ['userId', 'time', 'tenantId'],
   data() {
     return {
       setUserGroup: {
@@ -82,7 +82,7 @@ export default {
       console.log(this.setUserGroup.userGroupRightTree)
       console.log(this.setUserGroup.userGroupLeftTree)
       var res = await this.$sendAsync({
-        url: `/api/PmsUser/get_user_groups/${this.queryInfo.appId}/${this.userId}`,
+        url: `/api/PmsUser/get_user_groups/${this.queryInfo.appId}/${this.userId}/${this.tenantId}`,
         method: 'get'
       })
       this.setUserGroup.userGroupLeftTree = res.data
@@ -137,7 +137,7 @@ export default {
       )
       this.isEditor = false
       var res = await this.$sendAsync({
-        url: `/api/PmsUser/set_user_groups/${this.queryInfo.appId}/${this.userId}`,
+        url: `/api/PmsUser/set_user_groups/${this.queryInfo.appId}/${this.userId}/${this.tenantId}`,
         method: 'post',
         data: this.setUserGroup.userGroupRightTree
       })

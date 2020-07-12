@@ -10,6 +10,17 @@
     <el-card>
       <!--搜索-->
       <el-row :gutter="15">
+        <el-col :span="6">
+          <tenant-select
+            :tenantId="queryInfo.tenantId"
+            @selChange="
+              value => {
+                queryInfo.tenantId = value
+                loadData()
+              }
+            "
+          ></tenant-select>
+        </el-col>
         <el-col :span="4">
           <el-input
             v-model="queryInfo.name"
@@ -27,12 +38,12 @@
             >搜索</el-button
           >
         </el-col>
-        <el-col v-show="queryInfo.parentId != ''" :span="2" :offset="10">
+        <el-col v-show="queryInfo.parentId != ''" :span="2">
           <el-button type="primary" @click="backUp()" icon="el-icon-back"
             >返回顶级</el-button
           >
         </el-col>
-        <el-col :span="2" :offset="queryInfo.parentId == '' ? 12 : 1">
+        <el-col :span="2">
           <el-button
             type="primary"
             @click="createData()"
@@ -173,6 +184,8 @@
 </template>
 
 <script>
+// 租户
+import TenantSelect from '../Com/TenantSelect'
 export default {
   data() {
     return {
@@ -181,6 +194,7 @@ export default {
         name: '',
         parentId: '',
         parentName: '',
+        tenantId: '00000000-0000-0000-0000-000000000000',
         isContainChild: false,
         current: 1,
         pageSize: 10,
@@ -207,7 +221,8 @@ export default {
           id: '',
           seqNo: 0,
           type: '',
-          code: 'none'
+          code: 'none',
+          tenantId: ''
         },
         // 表单验证规则
         validRules: {}
@@ -241,6 +256,7 @@ export default {
       )
       this.createOrEdirotDialog.form.parentId = this.queryInfo.parentId
       this.createOrEdirotDialog.form.parentName = this.queryInfo.parentName
+      this.createOrEdirotDialog.form.tenantId = this.queryInfo.tenantId
     },
     // 修改
     async editorData(index, data) {
@@ -337,6 +353,10 @@ export default {
     })
     this.orgTypes = orgTypeRes.data
     this.loadData()
+  },
+  components: {
+    // eslint-disable-next-line vue/no-unused-components
+    'tenant-select': TenantSelect
   }
 }
 </script>

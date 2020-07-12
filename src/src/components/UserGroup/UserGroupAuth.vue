@@ -51,7 +51,7 @@
 
 <script>
 export default {
-  props: ['authGroupId', 'time', 'appId'],
+  props: ['authGroupId', 'time', 'appId', 'tenantId'],
   data() {
     return {
       filterText: '',
@@ -214,7 +214,8 @@ export default {
         appId: this.appId,
         appFeatureIds: this.userModuleAuth.map(e => e.moduleId),
         authValues: this.userModuleAuth.map(e => e.actionValue),
-        grantTypes: this.userModuleAuth.map(e => e.grantType)
+        grantTypes: this.userModuleAuth.map(e => e.grantType),
+        tenantId: this.tenantId
       }
       console.log(data)
       var res = await this.$sendAsync({

@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  props: ['empId', 'time'],
+  props: ['empId', 'time', 'tenantId'],
   data() {
     return {
       filterText: '',
@@ -51,9 +51,10 @@ export default {
   },
   methods: {
     async init() {
+      console.log(this.tenantId)
       // 加载机构树
       var userOrgMapRes = await this.$sendAsync({
-        url: '/api/PmsUser/get_user_jobs/' + this.empId,
+        url: `/api/PmsUser/get_user_jobs/${this.empId}/${this.tenantId}`,
         method: 'get'
       })
       if (!userOrgMapRes) {
@@ -72,9 +73,10 @@ export default {
       // console.log(this.$refs.tree)
       // return false
       // eslint-disable-next-line no-unreachable
+      console.log(this.tenantId)
       var jobIds = this.$refs.tree.getCheckedKeys()
       var res = await this.$sendAsync({
-        url: '/api/PmsUser/set_user_jobs/' + this.empId,
+        url: `/api/PmsUser/set_user_jobs/${this.empId}/${this.tenantId}`,
         method: 'post',
         data: jobIds
       })

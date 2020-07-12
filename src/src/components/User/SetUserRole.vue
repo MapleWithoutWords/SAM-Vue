@@ -43,7 +43,7 @@
 
 <script>
 export default {
-  props: ['userId', 'time'],
+  props: ['userId', 'time', 'tenantId'],
   data() {
     return {
       filterText: '',
@@ -80,7 +80,7 @@ export default {
     // 加载模块树事件
     async loadData() {
       var roleRes = await this.$sendAsync({
-        url: `/api/PmsUser/get_roles/${this.queryInfo.appId}/${this.userId}`,
+        url: `/api/PmsUser/get_roles/${this.queryInfo.appId}/${this.userId}/${this.tenantId}`,
         method: 'get'
       })
       this.allRoles = roleRes.data.tree
@@ -102,7 +102,7 @@ export default {
     async btnSave() {
       console.log(this.$refs.tree.getCheckedKeys())
       var res = await this.$sendAsync({
-        url: `/api/PmsUser/set_roles/${this.queryInfo.appId}/${this.userId}`,
+        url: `/api/PmsUser/set_roles/${this.queryInfo.appId}/${this.userId}/${this.tenantId}`,
         method: 'post',
         data: this.$refs.tree.getCheckedKeys()
       })

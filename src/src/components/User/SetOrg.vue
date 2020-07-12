@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  props: ['empId', 'time'],
+  props: ['empId', 'time', 'tenantId'],
   data() {
     return {
       filterText: '',
@@ -52,7 +52,7 @@ export default {
     async init() {
       // 加载机构树
       var userOrgMapRes = await this.$sendAsync({
-        url: '/api/PmsUser/get_org_tree/' + this.empId,
+        url: `/api/PmsUser/get_org_tree/${this.empId}/${this.tenantId}`,
         method: 'get'
       })
       if (!userOrgMapRes) {
@@ -70,7 +70,7 @@ export default {
     async btnSave() {
       var orgIds = this.$refs.tree.getCheckedKeys()
       var res = await this.$sendAsync({
-        url: '/api/PmsUser/set_orgs/' + this.empId,
+        url: `/api/PmsUser/set_orgs/${this.empId}/${this.tenantId}`,
         method: 'post',
         data: orgIds
       })

@@ -3,28 +3,17 @@
     <!-- 导航头-->
     <el-breadcrumb>
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户数据</el-breadcrumb-item>
-      <el-breadcrumb-item>岗位类别管理</el-breadcrumb-item>
+      <el-breadcrumb-item>系统配置</el-breadcrumb-item>
+      <el-breadcrumb-item>租户管理</el-breadcrumb-item>
     </el-breadcrumb>
     <!--主体-->
     <el-card>
       <!--搜索-->
       <el-row :gutter="15">
-        <el-col :span="6">
-          <tenant-select
-            :tenantId="queryInfo.tenantId"
-            @selChange="
-              value => {
-                queryInfo.tenantId = value
-                loadData()
-              }
-            "
-          ></tenant-select>
-        </el-col>
         <el-col :span="4">
           <el-input
             v-model="queryInfo.name"
-            placeholder="请输入名称"
+            placeholder="请输入用户名或账号"
           ></el-input>
         </el-col>
         <el-col :span="2">
@@ -32,7 +21,7 @@
             >搜索</el-button
           >
         </el-col>
-        <el-col :span="2" :offset="10">
+        <el-col :span="2" :offset="16">
           <el-button
             type="primary"
             @click="createData()"
@@ -46,7 +35,7 @@
       <el-table :data="appData" :stripe="true" :border="true">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="name" label="名称"></el-table-column>
-        <el-table-column prop="description" label="描述"></el-table-column>
+        <el-table-column prop="code" label="Code"></el-table-column>
         <!--操作列-->
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -101,14 +90,14 @@
         label-suffix="："
         :rules="createOrEdirotDialog.validRules"
       >
-        <el-form-item label="岗位类别名" :required="true" prop="name">
+        <el-form-item label="租户名" :required="true" prop="name">
           <el-input v-model="createOrEdirotDialog.form.name"></el-input>
         </el-form-item>
 
-        <el-form-item label="描述" prop="description">
+        <el-form-item label="Code" prop="description">
           <el-input
             type="textarea"
-            v-model="createOrEdirotDialog.form.description"
+            v-model="createOrEdirotDialog.form.code"
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -123,8 +112,6 @@
 </template>
 
 <script>
-// 租户
-import TenantSelect from '../Com/TenantSelect'
 export default {
   data() {
     return {
@@ -133,21 +120,20 @@ export default {
         name: null,
         current: 1,
         pageSize: 10,
-        tenantId: '00000000-0000-0000-0000-000000000000',
         count: 0
       },
       // 列表数据
       appData: [],
       createOrEdirotDialog: {
-        dialogTitle: '资源类型操作',
+        dialogTitle: '租户操作',
         visible: false,
         isAdd: false,
         // 表单对象
         form: {
           name: '',
-          description: 'none',
-          id: '',
-          tenantId: ''
+          code: '',
+          disableReason: 'none',
+          id: ''
         },
         // 表单验证规则
         validRules: {}
@@ -159,7 +145,7 @@ export default {
     async loadData() {
       var query = this.$getQuery(this.queryInfo)
       var res = await this.$http({
-        url: '/api/PmsJobType/getbyurl?' + query,
+        url: '/api/pmstenant/getbyurl?' + query,
         method: 'get'
       })
       var data = this.$validResponse(res)
@@ -179,7 +165,6 @@ export default {
         this.createOrEdirotDialog.form,
         this.$options.data().createOrEdirotDialog.form
       )
-      this.createOrEdirotDialog.form.tenantId = this.queryInfo.tenantId
     },
     // 修改
     editorData(index, data) {
@@ -197,7 +182,7 @@ export default {
         }
         if (this.createOrEdirotDialog.isAdd === false) {
           var resData = await this.$sendAsync({
-            url: '/api/PmsJobType/addnew',
+            url: '/api/pmstenant/addnew',
             method: 'put',
             data: that.createOrEdirotDialog.form
           })
@@ -207,7 +192,7 @@ export default {
           }
         } else {
           var editorResData = await this.$sendAsync({
-            url: '/api/PmsJobType/update',
+            url: '/api/pmstenant/update',
             method: 'post',
             data: that.createOrEdirotDialog.form
           })
@@ -225,7 +210,9 @@ export default {
     },
     // 删除
     async delData(index, data) {
-      var resData = await this.$delById(`/api/PmsJobType/delete/${data.id}`)
+      var resData = await this.$delById(
+        `/api/pmstenant/delete/${data.id}`
+      )
       if (resData !== true) {
         return false
       }
@@ -245,10 +232,6 @@ export default {
   },
   mounted: async function() {
     this.loadData()
-  },
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    'tenant-select': TenantSelect
   }
 }
 </script>

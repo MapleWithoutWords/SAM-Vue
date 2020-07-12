@@ -66,7 +66,7 @@
 
 <script>
 export default {
-  props: ['userId', 'time'],
+  props: ['userId', 'time', 'tenantId'],
   data() {
     return {
       filterText: '',
@@ -239,7 +239,8 @@ export default {
         appId: this.queryInfo.appId,
         appFeatureIds: this.userModuleAuth.map(e => e.moduleId),
         authValues: this.userModuleAuth.map(e => e.actionValue),
-        grantTypes: this.userModuleAuth.map(e => e.grantType)
+        grantTypes: this.userModuleAuth.map(e => e.grantType),
+        tenantId: this.tenantId
       }
       console.log(data)
       var res = await this.$sendAsync({
@@ -354,7 +355,7 @@ export default {
   .el-dialog {
     width: 40% !important;
   }
-  .el-checkbox{
+  .el-checkbox {
     line-height: 26px;
   }
 }
