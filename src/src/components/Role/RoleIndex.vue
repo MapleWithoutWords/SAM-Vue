@@ -403,7 +403,7 @@ export default {
     })
     this.appList = resData.data
     this.queryInfo.applicationId =
-      resData.data.length > 0 ? resData.data[0].value : ''
+      resData.data.length > 0 ? resData.data[0].id : ''
 
     this.loadData()
   },

@@ -369,7 +369,7 @@ export default {
     })
     this.appList = resData.data
     this.queryInfo.applicationId =
-      resData.data.length > 0 ? resData.data[0].value : ''
+      resData.data.length > 0 ? resData.data[0].id : ''
 
     // 获取操作类型
     var allOpearSources = await this.$sendAsync({

@@ -379,7 +379,7 @@ export default {
       method: 'get'
     })
     this.appList = resData.data
-    this.queryInfo.appId = resData.data.length > 0 ? resData.data[0].value : ''
+    this.queryInfo.appId = resData.data.length > 0 ? resData.data[0].id : ''
 
     this.loadData()
   }
