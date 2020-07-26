@@ -15,6 +15,7 @@ var encrypt = new JSEncrypt()
 axios.defaults.baseURL = 'http://localhost:5000/'
 var appKey = 'fe2c0892-ebc4-42f8-bc90-c4d4a15a2fef'
 Vue.prototype.$appKey = appKey
+Vue.prototype.$adminId = '24e2f91e-b145-49ef-99f7-cf433a4c5525'
 
 // 添加请求拦截
 axios.interceptors.request.use(config => {

@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <el-card>
       <el-row :gutter="15">
-        <el-col :span="6">
+        <el-col :span="5">
           <tenant-select
             :tenantId="queryInfo.tenantId"
             @selChange="
@@ -44,12 +44,12 @@
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="trueName" label="用户名"></el-table-column>
         <el-table-column prop="account" label="账号"></el-table-column>
-        <el-table-column label="性别">
+        <el-table-column label="性别" width="100">
           <template slot-scope="scope">{{
             scope.row.gender == 0 ? '男' : '女'
           }}</template>
         </el-table-column>
-        <el-table-column label="是否禁用">
+        <el-table-column label="是否禁用" width="100">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.status"
@@ -63,6 +63,26 @@
         <!--操作列-->
         <el-table-column label="操作">
           <template slot-scope="scope">
+            <!-- 授权应用系统 -->
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="授权应用系统"
+              placement="top"
+            >
+              <el-button
+                type="warning"
+                size="mini"
+                icon="el-icon-menu"
+                @click="
+                  setUserAppAuthDialog.visible = true
+                  setUserAppAuthDialog.userId = scope.row.id
+                  setUserAppAuthDialog.title = `授权应用系统-【${scope.row.trueName}】`
+                "
+                circle
+              ></el-button>
+            </el-tooltip>
+
             <!-- 分配机构 -->
             <el-tooltip
               class="item"
@@ -170,18 +190,6 @@
               content="修改密码"
               placement="top"
             >
-              <el-button
-                type="warning"
-                size="mini"
-                icon="el-icon-s-goods"
-                @click="
-                  updatePwdDialog.visable = true
-                  updatePwdDialog.data.id = scope.row.id
-                  updatePwdDialog.data.account = scope.row.account
-                  updatePwdDialog.title = `修改密码-【${scope.row.trueName}】`
-                "
-                circle
-              ></el-button>
             </el-tooltip>
 
             <el-button
@@ -194,6 +202,13 @@
 
             <el-button
               type="danger"
+              size="mini"
+              @click="delUser(scope.$index, scope.row)"
+              icon="el-icon-delete"
+              circle
+            ></el-button>
+            <el-button
+              type="primary"
               size="mini"
               @click="delUser(scope.$index, scope.row)"
               icon="el-icon-delete"
@@ -406,6 +421,24 @@
         @cancel="setJobDialog.visible = false"
       ></sam-set-job>
     </el-dialog>
+
+    <!-- 分级授权 -->
+    <el-dialog
+      top="5vh"
+      width="40%"
+      :close-on-click-modal="false"
+      :title="setUserAppAuthDialog.title"
+      :visible.sync="setUserAppAuthDialog.visible"
+      direction="ltr"
+    >
+      <set-user-app-auth
+        :userId="setUserAppAuthDialog.userId"
+        :time="new Date().getTime()"
+        :tenantId="queryInfo.tenantId"
+        @ok="setUserAppAuthDialog.visible = false"
+        @cancel="setUserAppAuthDialog.visible = false"
+      ></set-user-app-auth>
+    </el-dialog>
   </div>
 </template>
 
@@ -422,11 +455,12 @@ import setUserRole from './SetUserRole'
 import SetJob from './SetJob'
 // 租户
 import TenantSelect from '../Com/TenantSelect'
+// 授权应用系统
+import SetUserAppAuth from './SetUserApp'
 
 export default {
   data() {
     return {
-      tenants: [],
       // 状态类型
       statusType: [
         { label: '正常', value: 0 },
@@ -509,6 +543,12 @@ export default {
       // 分配角色
       setUserRoleDialog: {
         title: '分配角色',
+        visible: false,
+        userId: '18063dc9-35e9-4f50-a4df-7ec24891b880'
+      },
+      // 授权应用系统
+      setUserAppAuthDialog: {
+        title: '授权应用系统',
         visible: false,
         userId: '18063dc9-35e9-4f50-a4df-7ec24891b880'
       }
@@ -655,11 +695,6 @@ export default {
     }
   },
   mounted: async function() {
-    var tenantRes = await this.$sendAsync({
-      url: '/api/pmstenant/getbyurl',
-      method: 'get'
-    })
-    this.tenants = tenantRes.data
     this.loadData()
   },
   components: {
@@ -674,7 +709,9 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     'sam-set-job': SetJob,
     // eslint-disable-next-line vue/no-unused-components
-    'tenant-select': TenantSelect
+    'tenant-select': TenantSelect,
+    // eslint-disable-next-line vue/no-unused-components
+    'set-user-app-auth': SetUserAppAuth
   }
 }
 </script>

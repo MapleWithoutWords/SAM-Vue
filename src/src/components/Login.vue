@@ -82,6 +82,19 @@ export default {
           return false
         }
         window.sessionStorage.setItem('token', JSON.stringify(res))
+        var userRes = await this.$http({
+          url: '/api/getuserinfo',
+          method: 'get'
+        })
+        if (!userRes) {
+          this.$message.error('网络错误')
+          return false
+        }
+        if (userRes.code !== 0) {
+          this.$message.error(userRes.msg)
+          return false
+        }
+        window.sessionStorage.setItem('userId', userRes.data)
         this.$router.push('/home')
       })
     }

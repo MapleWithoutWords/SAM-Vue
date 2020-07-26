@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="$adminId === thisUserId">
     <span style="font-size:0.8vw;">租户：</span>
     <el-select
       v-model="selTenantId"
@@ -27,7 +27,8 @@ export default {
   data() {
     return {
       selTenantId: '',
-      tenants: []
+      tenants: [],
+      thisUserId: ''
     }
   },
   methods: {
@@ -36,12 +37,15 @@ export default {
     }
   },
   mounted: async function() {
-    this.selTenantId = this.tenantId
-    var tenantRes = await this.$sendAsync({
-      url: '/api/pmstenant/getbyurl',
-      method: 'get'
-    })
-    this.tenants = tenantRes.data
+    this.thisUserId = window.sessionStorage.getItem('userId')
+    if (this.$adminId === this.thisUserId) {
+      this.selTenantId = this.tenantId
+      var tenantRes = await this.$sendAsync({
+        url: '/api/pmstenant/getbyurl',
+        method: 'get'
+      })
+      this.tenants = tenantRes.data
+    }
   }
 }
 </script>

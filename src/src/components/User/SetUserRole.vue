@@ -8,9 +8,9 @@
     >
       <el-option
         v-for="item in allApps"
-        :key="item.value"
+        :key="item.id"
         :label="item.name"
-        :value="item.value"
+        :value="item.id"
       >
       </el-option>
     </el-select>
@@ -69,11 +69,11 @@ export default {
   methods: {
     async init() {
       var appRes = await this.$sendAsync({
-        url: '/api/com/getallapp',
+        url: '/api/app/getbyurl?pageSize=999',
         method: 'get'
       })
       this.allApps = appRes.data
-      this.queryInfo.appId = appRes.data.length > 0 ? appRes.data[0].value : ''
+      this.queryInfo.appId = appRes.data.length > 0 ? appRes.data[0].id : ''
       this.queryInfo.oldAppId = this.queryInfo.appId
       this.loadData()
     },

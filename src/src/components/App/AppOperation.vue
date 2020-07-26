@@ -34,9 +34,9 @@
               >
                 <el-option
                   v-for="item in appList"
-                  :key="item.value"
+                  :key="item.id"
                   :label="item.name"
-                  :value="item.value"
+                  :value="item.id"
                 >
                 </el-option>
               </el-select>
@@ -364,7 +364,7 @@ export default {
   },
   mounted: async function() {
     var resData = await this.$sendAsync({
-      url: '/api/com/getallapp',
+      url: '/api/app/getbyurl?pageSize=999',
       method: 'get'
     })
     this.appList = resData.data

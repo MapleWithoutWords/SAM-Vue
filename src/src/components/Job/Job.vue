@@ -59,7 +59,7 @@
             <el-col :span="2">
               <el-button
                 type="primary"
-                @click="loadData()"
+                @click="loadJobData()"
                 icon="el-icon-search"
                 >搜索</el-button
               >
@@ -238,6 +238,9 @@ export default {
     async loadData() {
       await this.loadOrg()
       await this.loadJobType()
+      await this.loadJobData()
+    },
+    async loadJobData() {
       var query = this.$getQuery(this.queryInfo)
       var res = await this.$http({
         url: '/api/pmsjob/getbyurl?' + query,
@@ -359,7 +362,7 @@ export default {
       this.queryInfo.orgId = data.id
       this.queryInfo.orgName = data.title
       this.createOrEdirotDialog.form.organizationId = data.id
-      this.loadData()
+      this.loadJobData()
       return false
     }
   },
