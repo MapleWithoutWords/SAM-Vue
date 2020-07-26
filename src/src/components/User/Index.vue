@@ -595,7 +595,7 @@ export default {
     },
     // 禁用用户
     async handleDisable(index, data) {
-      var url = `/api/app/changestatus/${data.id}/${data.status}`
+      var url = `/api/PmsUser/changestatus/${data.id}/${data.status}`
       this.$changeStatus(url)
     },
     // 删除用户

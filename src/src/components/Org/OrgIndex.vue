@@ -64,6 +64,12 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <!--查看子集-->
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="查看子机构"
+              placement="top"
+            >
             <el-button
               v-show="scope.row.childCount > 0"
               size="mini"
@@ -71,6 +77,7 @@
               @click="showChild(scope.row)"
               circle
             ></el-button>
+            </el-tooltip>
 
             <!--添加子集-->
             <el-tooltip

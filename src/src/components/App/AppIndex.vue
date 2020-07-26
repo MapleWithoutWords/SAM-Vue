@@ -144,6 +144,9 @@
         <el-form-item label="应用程序名" :required="true" prop="name">
           <el-input v-model="createOrEdirotDialog.form.name"></el-input>
         </el-form-item>
+        <el-form-item label="应用程序地址" :required="true" prop="applicationAddress">
+          <el-input v-model="createOrEdirotDialog.form.applicationAddress"></el-input>
+        </el-form-item>
         <!-- 新增时不需要appKey -->
         <el-form-item v-if="createOrEdirotDialog.isAdd" label="应用程序key">
           <el-input
@@ -242,6 +245,7 @@ export default {
           type: 0,
           status: 0,
           description: 'none',
+          applicationAddress: 'none',
           seqNo: 0,
           id: ''
         },

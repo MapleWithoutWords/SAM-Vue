@@ -82,7 +82,7 @@
             <el-tooltip
               class="item"
               effect="dark"
-              content="查看子模块"
+              content="查看子角色"
               placement="top"
             >
               <el-button
@@ -97,7 +97,7 @@
             <el-tooltip
               class="item"
               effect="dark"
-              content="添加子模块"
+              content="添加子角色"
               placement="top"
             >
               <el-button
