@@ -46,7 +46,7 @@ export default {
         account: '',
         password: '',
         appId: this.$appKey,
-        time: new Date().getTime()
+        time: Math.round(new Date().getTime() / 1000)
       },
       rules: {
         account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
@@ -65,6 +65,7 @@ export default {
         }
         var pubkey = await this.$getRSAPubKey()
         this.$encrypt.setPublicKey(pubkey)
+        this.login.time = Math.round(new Date().getTime() / 1000)
         var str = this.$encrypt.encrypt(JSON.stringify(this.login))
         // const that = this
         // eslint-disable-next-line no-unused-vars

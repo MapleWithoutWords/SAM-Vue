@@ -59,12 +59,15 @@ axios.interceptors.response.use(
     nprogress.done()
     debugger
     console.log(error.response)
+    if (!error.response) {
+      var json = { code: 1, msg: error }
+      return json
+    }
     if (error.response.status === 401) {
       window.sessionStorage.clear()
       router.push('/login')
       return null
     }
-    console.debug(error)
     // 对响应错误做点什么
     // eslint-disable-next-line prefer-promise-reject-errors
     return null

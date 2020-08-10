@@ -190,6 +190,18 @@
               content="修改密码"
               placement="top"
             >
+              <el-button
+                type="warning"
+                size="mini"
+                icon="el-icon-s-goods"
+                @click="
+                  updatePwdDialog.visable = true
+                  updatePwdDialog.data.id = scope.row.id
+                  updatePwdDialog.data.account = scope.row.account
+                  updatePwdDialog.title = `修改密码-【${scope.row.trueName}】`
+                "
+                circle
+              ></el-button>
             </el-tooltip>
 
             <el-button
@@ -202,13 +214,6 @@
 
             <el-button
               type="danger"
-              size="mini"
-              @click="delUser(scope.$index, scope.row)"
-              icon="el-icon-delete"
-              circle
-            ></el-button>
-            <el-button
-              type="primary"
               size="mini"
               @click="delUser(scope.$index, scope.row)"
               icon="el-icon-delete"
