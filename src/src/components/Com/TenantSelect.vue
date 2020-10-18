@@ -1,6 +1,6 @@
 <template>
   <div v-if="$adminId === thisUserId">
-    <span style="font-size:0.8vw;">租户：</span>
+    <span style="font-size:0.7vw;">租户：</span>
     <el-select
       v-model="selTenantId"
       @change="selChange()"

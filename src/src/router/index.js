@@ -21,6 +21,8 @@ const job = () =>
 
 const AppIndex = () =>
   import(/* webpackChunkName:"app_role" */ '../components/App/AppIndex.vue')
+const AppUrl = () =>
+  import(/* webpackChunkName:"app_role" */ '../components/App/AppUrl.vue')
 const AppModule = () =>
   import(/* webpackChunkName:"app_role" */ '../components/App/AppModule.vue')
 const AppOperation = () =>
@@ -119,6 +121,10 @@ const routes = [
       {
         path: '/tenantIndex',
         component: TenantIndex
+      },
+      {
+        path: '/appUrl',
+        component: AppUrl
       }
     ]
   }

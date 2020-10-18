@@ -35,7 +35,8 @@ import {
   CheckboxGroup,
   Transfer,
   Tree,
-  Drawer
+  Drawer,
+  Upload
 } from 'element-ui'
 Vue.use(Button)
 Vue.use(Form)
@@ -71,5 +72,6 @@ Vue.use(CheckboxGroup)
 Vue.use(Transfer)
 Vue.use(Tree)
 Vue.use(Drawer)
+Vue.use(Upload)
 Vue.prototype.$message = Message
 Vue.prototype.$msgbox = MessageBox

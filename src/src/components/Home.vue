@@ -58,13 +58,17 @@
               <i class="el-icon-menu"></i>
               <span>应用系统</span>
             </el-menu-item>
+            <el-menu-item index="/appmodule">
+              <i class="el-icon-menu"></i>
+              <span>应用系统模块</span>
+            </el-menu-item>
             <el-menu-item index="/AppOperation">
               <i class="el-icon-menu"></i>
               <span>应用系统操作</span>
             </el-menu-item>
-            <el-menu-item index="/appmodule">
+            <el-menu-item index="/appUrl">
               <i class="el-icon-menu"></i>
-              <span>应用系统模块</span>
+              <span>应用系统接口地址</span>
             </el-menu-item>
             <el-menu-item index="/roleIndex">
               <i class="el-icon-user"></i>

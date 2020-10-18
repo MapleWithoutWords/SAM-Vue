@@ -141,11 +141,25 @@
         <el-form-item label="操作名" :required="true" prop="name">
           <el-input v-model="createOrEdirotDialog.form.name"></el-input>
         </el-form-item>
-        <el-form-item label="地址" :required="true" prop="url">
-          <el-input
+        <el-form-item label="地址" :required="true" prop="operatorUrlIds">
+          <!-- <el-input
             v-model="createOrEdirotDialog.form.url"
             placeholder="接口地址"
-          ></el-input>
+          ></el-input> -->
+          <el-select
+            v-model="createOrEdirotDialog.form.operatorUrlIds"
+            multiple
+            filterable
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in createOrEdirotDialog.appUrlList"
+              :key="item.url"
+              :label="item.url"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="操作类型" :required="true">
           <el-select
@@ -220,15 +234,18 @@ export default {
           applicationId: '',
           moduleId: '',
           icon: 'none',
-          url: '',
+          url: 'none',
           appName: '',
           seqNo: 0,
-          id: ''
+          id: '',
+          operatorUrlIds: []
         },
         // 操作类型
         operationSources: [],
         // 表单验证规则
-        validRules: {}
+        validRules: {},
+        // 应用系统接口地址
+        appUrlList: []
       }
     }
   },
@@ -247,6 +264,12 @@ export default {
         this.queryInfo.count = res.count
         this.queryInfo.pageSize = res.page?.pageSize
       }
+      // 获取应用系统地址
+      var allAppUrlListRes = await this.$sendAsync({
+        url: `/api/appurl/getbyurl?applicationId=${this.queryInfo.applicationId}&pageSize=999`,
+        method: 'get'
+      })
+      this.createOrEdirotDialog.appUrlList = allAppUrlListRes.data
     },
     // 创建
     createData() {
@@ -275,6 +298,16 @@ export default {
       this.createOrEdirotDialog.isAdd = true
       this.createOrEdirotDialog.visible = true
       Object.assign(this.createOrEdirotDialog.form, data)
+      console.log(this.createOrEdirotDialog.form.url)
+      console.log(this.createOrEdirotDialog.appUrlList)
+      console.log(
+        this.createOrEdirotDialog.appUrlList.filter(
+          e => this.createOrEdirotDialog.form.url.indexOf(e.url) > -1
+        )
+      )
+      this.createOrEdirotDialog.form.operatorUrlIds = this.createOrEdirotDialog.appUrlList
+        .filter(e => this.createOrEdirotDialog.form.url.indexOf(e.url) > -1)
+        .map(e => e.id)
     },
     onSubmit() {
       const that = this
@@ -289,6 +322,7 @@ export default {
             data: that.createOrEdirotDialog.form
           })
           if (resData !== null) {
+            resData.data.appName = this.queryInfo.appName
             that.operaData.push(resData.data)
             that.createOrEdirotDialog.visible = false
           }
